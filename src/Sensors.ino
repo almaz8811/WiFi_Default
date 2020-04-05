@@ -71,17 +71,17 @@ void initDHT() {
   if (t < test) t = test;
   //Serial.println(t);
   String temp;
-  temp += dht.getTemperature();
+  temp += (dht.getTemperature() - 3);
   //  Serial.println(temp);
   if (temp != "nan") {
-    sendStatus(temperatureS, dht.getTemperature());
+    sendStatus(temperatureS, (dht.getTemperature() + 3));
     sendOptions(alarmtempS, 0);
     alarmLoad(temperatureS, highalarmtempS, lowalarmtempS);
     sendStatus(humidityS, dht.getHumidity());
     sendOptions(alarmhumS, 0);
     alarmLoad(humidityS, highalarmhumS, lowalarmhumS);
     ts.add(tDHT, test, [&](void*) {
-      sendStatus(temperatureS, dht.getTemperature());
+      sendStatus(temperatureS, (dht.getTemperature() - 3));
       sendStatus(humidityS, dht.getHumidity());
       alarmTest(temperatureS, highalarmtempS, lowalarmtempS, alarmtempS);
       alarmTest(humidityS, highalarmhumS, lowalarmhumS, alarmhumS);
