@@ -67,27 +67,28 @@ void initDHT() {
   dht.setup(pin);
   delay(1000);
   static uint16_t t = readArgsInt();
-  static uint16_t test = dht.getMinimumSamplingPeriod();
-  if (t < test) t = test;
+  static uint16_t test = dht.getMinimumSamplingPeriod() * 2;  //  TODO: Время опроса датчика умножаю на два, иначе DHT11 показывает не верные значения
+  if (t < test) t = test;   
   //Serial.println(t);
   String temp;
-  temp += (dht.getTemperature() - 3);
+  temp += (dht.getTemperature());
   //  Serial.println(temp);
   if (temp != "nan") {
-    sendStatus(temperatureS, (dht.getTemperature() + 3));
+    sendStatus(temperatureS, (dht.getTemperature()));
     sendOptions(alarmtempS, 0);
     alarmLoad(temperatureS, highalarmtempS, lowalarmtempS);
     sendStatus(humidityS, dht.getHumidity());
     sendOptions(alarmhumS, 0);
     alarmLoad(humidityS, highalarmhumS, lowalarmhumS);
     ts.add(tDHT, test, [&](void*) {
-      sendStatus(temperatureS, (dht.getTemperature() - 3));
+      sendStatus(temperatureS, (dht.getTemperature()));
       sendStatus(humidityS, dht.getHumidity());
       alarmTest(temperatureS, highalarmtempS, lowalarmtempS, alarmtempS);
       alarmTest(humidityS, highalarmhumS, lowalarmhumS, alarmhumS);
     }, nullptr, true);
     modulesReg(temperatureS);
     modulesReg(humidityS);
+
   }
 }
 

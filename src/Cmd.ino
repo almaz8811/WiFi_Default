@@ -69,6 +69,7 @@ void alarmComm() {
 }
 void initAdmin() {
   modulesReg("admin");
+
 }
 
 void alarmOff() {
